@@ -38,3 +38,47 @@ downstream_percent_total_pcf: The percentage of the total carbon footprint attri
 ### Table 'countries'
 1. **id**: Unique identifier for each country.
 2. **country_name**: The name of the country.
+
+## cau 1.
+```SQL
+select product_name,
+Round(AVG(carbon_footprint_pcf),2) as average_carbon_footprint_pcf
+from product_emissions
+group by product_name
+order by average_carbon_footprint_pcf desc
+limit 10
+```
+## cau 2.
+## cau 3.
+``` SQL
+select industry_group, sum(avg_pcf) as total_pcf
+from 
+	(
+	  select prod_em.product_name ,
+	  		ind_gr.industry_groups ,
+	  		round(avg(carbon_footprint_pcf),2) as avg_pcf
+	  from product_emissions as prod_em
+join industry_groups as ind_gr on ind_gr.id = prod_em.industry_group_id
+group by prod_em.product_name, ind_gr.industry_group
+  ) as tb
+group by industry_group
+order by total_pcf desc
+limit 10
+```
+## cau 4.
+## cau 5.
+## cau 6.
+``` SQL
+select year,
+  count(distinct product_name) as count_product,
+  sum(avg_pcf) as sum_pcf
+from (
+      select year,
+            product_name,
+            round(avg(carbon_footprint_pcf),2) as avg_pcf
+      from product_emissions as prod_em
+      group by year, product_name
+      ) as tb
+group by year
+```
+## cau 7.
